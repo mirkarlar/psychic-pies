@@ -147,8 +147,8 @@
                             <configOptions>
                                 <useSpringBoot3>true</useSpringBoot3>
                                 <interfaceOnly>true</interfaceOnly>
-                                <modelPackage>nl.hilgenbos.javaclass.pie_shop.model</modelPackage>
-                                <apiPackage>nl.hilgenbos.javaclass.pie_shop.api</apiPackage>
+                                <modelPackage>nl.hilgenbos.psyichic_pies.model</modelPackage>
+                                <apiPackage>nl.hilgenbos.psyichic_pies.api</apiPackage>
                                 <useBeanValidation>true</useBeanValidation>
                                 <useJakartaEe>true</useJakartaEe>
                                 <dateLibrary>java8</dateLibrary>
