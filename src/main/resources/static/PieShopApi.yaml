@@ -1,0 +1,210 @@
+openapi: 3.0.3
+info:
+  title: Pie Webshop API
+  version: 1.0.0
+  description: Simple REST API for a webshop selling pies
+
+servers:
+  - url: http://localhost:8080/api
+
+paths:
+  /pies:
+    get:
+      summary: List all pie types
+      responses:
+        '200':
+          description: List of pies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pie'
+    post:
+      summary: Add a new pie type
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PieInput'
+      responses:
+        '201':
+          description: Pie created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pie'
+
+  /pies/{pieId}:
+    delete:
+      summary: Delete a pie type
+      parameters:
+        - in: path
+          name: pieId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Pie deleted
+
+  /stock:
+    get:
+      summary: Get current stock of all pies
+      responses:
+        '200':
+          description: Pie stock
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PieStock'
+
+  /cart:
+    get:
+      summary: Get current shopping cart contents
+      responses:
+        '200':
+          description: Cart contents
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+
+  /cart/items:
+    post:
+      summary: Add pie to cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartItemInput'
+      responses:
+        '200':
+          description: Item added to cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+
+    delete:
+      summary: Remove pie from cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartItemInput'
+      responses:
+        '200':
+          description: Item removed from cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+
+  /cart/total:
+    get:
+      summary: Get total price of the cart
+      responses:
+        '200':
+          description: Total price
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: number
+                    format: float
+
+  /order:
+    post:
+      summary: Place an order for the cart contents
+      responses:
+        '201':
+          description: Order placed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+components:
+  schemas:
+    Pie:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        price:
+          type: number
+          format: float
+      required: [id, name, price]
+
+    PieInput:
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: number
+          format: float
+      required: [name, price]
+
+    PieStock:
+      type: object
+      properties:
+        pieId:
+          type: integer
+        stock:
+          type: integer
+      required: [pieId, stock]
+
+    CartItemInput:
+      type: object
+      properties:
+        pieId:
+          type: integer
+        quantity:
+          type: integer
+      required: [pieId, quantity]
+
+    CartItem:
+      type: object
+      properties:
+        pie:
+          $ref: '#/components/schemas/Pie'
+        quantity:
+          type: integer
+      required: [pie, quantity]
+
+    Cart:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+      required: [items]
+
+    Order:
+      type: object
+      properties:
+        orderId:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+        total:
+          type: number
+          format: float
+      required: [orderId, items, total]
+
+
+  
