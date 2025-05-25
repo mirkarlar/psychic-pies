@@ -24,12 +24,22 @@ or if you got jq installed:
 ```aiignore
 TOKEN=$(curl  -k -s -X POST https://localhost:8080/users/login   -H "Content-Type: application/json" \
  -d '{"username":"'${ADMIN_USER}'","password":"'${ADMIN_USER_PASSWORD}'"}'   |  head -1 | jq -r .token )
-
 ```
+
+This will get the token and store it in the TOKEN variable.
+
+
+
 Note the use of head -1. This is because I use the status line for curl as outlined below. We are only interested in the first line.
 If you don't have the status line set it wont hurt as you still get the token on the first line.
 
-This will get the token and store it in the TOKEN variable.
+Looking at the man-pages: an even better option:
+
+```aiignore
+TOKEN=$(curl  --no-defaults -k -s -X POST https://localhost:8080/users/login   -H "Content-Type: application/json" \
+ -d '{"username":"'${ADMIN_USER}'","password":"'${ADMIN_USER_PASSWORD}'"}'  | jq -r .token )
+```
+
 
 ```aiignore
     echo $TOKEN
